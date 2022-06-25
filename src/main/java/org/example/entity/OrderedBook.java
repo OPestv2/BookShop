@@ -3,7 +3,6 @@ package org.example.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -12,19 +11,18 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-public class Order {
+public class OrderedBook {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne
     @JoinColumn(name = "book_id")
-    private List<OrderedBook> books;
+    private Book product;
 
-    private int totalPrice;
+    private int quantity;
+
+    private int price;
+
 }
