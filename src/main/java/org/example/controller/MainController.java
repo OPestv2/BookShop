@@ -8,14 +8,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainController {
 
     @GetMapping
-    String getMain(Model model){
+    String main(Model model){
         model.addAttribute("some_key","some_value");
         return "main";
     }
 
     @GetMapping("/login")
-    String getLogin(Model model){
+    String login(Model model){
         model.addAttribute("some_key","some_value");
         return "login";
+    }
+
+    @GetMapping("/register")
+    String register(Model model){
+        model.addAttribute("some_key","some_value");
+        return "register";
     }
 }
