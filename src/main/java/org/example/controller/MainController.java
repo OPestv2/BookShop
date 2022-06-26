@@ -9,7 +9,7 @@ import java.util.UUID;
 @Controller
 public class MainController {
 
-    @RequestMapping
+    @GetMapping
     String main(Model model){
         model.addAttribute("some_key","some_value");
         return "main";

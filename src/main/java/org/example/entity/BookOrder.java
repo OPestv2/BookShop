@@ -12,7 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-public class Order {
+public class BookOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,9 +20,9 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private ShopUser shopUser;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = OrderedBook.class)
     @JoinColumn(name = "book_id")
     private List<OrderedBook> books;
 

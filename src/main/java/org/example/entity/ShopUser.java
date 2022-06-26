@@ -3,9 +3,6 @@ package org.example.entity;
 
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.*;
@@ -16,7 +13,7 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User{
+public class ShopUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
