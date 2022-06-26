@@ -10,7 +10,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class UserDTO {
 
-    private UUID id;
+    private int id;
     private String nick;
 
     public static UserDTO fromEntity(ShopUser shopUser) {

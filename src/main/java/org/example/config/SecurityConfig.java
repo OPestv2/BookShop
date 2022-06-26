@@ -34,14 +34,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Repo
 
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private JwtAuthenticationEntryPoint authenticationEntryPoint;
-
-//    @Bean
-//    public JwtAuthenticationFilter jwtAuthenticationFilter(){
-//        return new JwtAuthenticationFilter();
-//    }
-
     @Bean
     public static PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -64,46 +56,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Repo
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
-//    @Override
-//    public void configure(HttpSecurity http) throws Exception {
-//        http.csrf().disable();
-//        http
-//                .authorizeRequests()
-//                .antMatchers("/swagger-ui.html").permitAll()
-//                .antMatchers("/v2/api-docs").permitAll()
-//                .antMatchers("/webjars/**").permitAll()
-//                .antMatchers("/swagger-resources/**").permitAll()
-//                .antMatchers(("h2-console/**")).permitAll()
-//                .antMatchers("/api/auth/**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/order/*").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-////                .addFilter(authenticationFilter())
-//                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userDetailsService, secret))
-//                .exceptionHandling()
-//                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
-//    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.headers().frameOptions().disable();
-        http.csrf().disable();
         http
-              .authorizeRequests()
-              .antMatchers("**").permitAll();
-    }
+                .authorizeRequests()
+                .antMatchers("/**").permitAll()
+                .anyRequest().authenticated();
+//                .and()
+//                .formLogin()
+//                .loginPage("/login")
+//                .permitAll()
+//                .and()
+//                .logout()
+//                .permitAll();
 
-
-
-    public JsonObjectAuthenticationFilter authenticationFilter() throws Exception {
-        JsonObjectAuthenticationFilter filter = new JsonObjectAuthenticationFilter(objectMapper);
-        filter.setAuthenticationSuccessHandler(successHandler);
-        filter.setAuthenticationFailureHandler(failureHandler);
-        filter.setAuthenticationManager(super.authenticationManager());
-        return filter;
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
     }
 
     @Override

@@ -44,6 +44,7 @@ public class MainController {
 
     @PostMapping("/login")
     String postLogin(Model model, @ModelAttribute("user") ShopUser user){
+        String a = "esfe";
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     user.getEmail(), user.getPassword()));
@@ -67,15 +68,16 @@ public class MainController {
     @PostMapping("/register")
     String postRegister(Model model, @ModelAttribute("user") ShopUser user){
 
-        if(user.getEmail().length() == 0 || user.getEmail().length() > 100 || !userService.getUserByEmail(user.getEmail()).isPresent())
-            return "login";
+        if(user.getEmail().length() == 0 || user.getEmail().length() > 100 || userService.getUserByEmail(user.getEmail()).isPresent() && user.getPassword().length()> 5)
+            return "register";
 
         ShopUser newuser = new ShopUser();
         newuser.setEmail(user.getEmail());
         newuser.setPassword(passwordEncoder.encode(user.getPassword()));
+        newuser.setRole("USER");
 
         userService.saveUser(newuser);
-        return "register";
+        return "redirect:/login";
     }
 
     @RequestMapping("/logout")
@@ -94,6 +96,4 @@ public class MainController {
         model.addAttribute("some_key","some_value");
         return "book_details";
     }
-
-
 }

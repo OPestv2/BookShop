@@ -17,7 +17,7 @@ public class ShopUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private int id;
 
     @NotNull
     private String email;
