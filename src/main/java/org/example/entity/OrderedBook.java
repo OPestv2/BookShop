@@ -1,6 +1,7 @@
 package org.example.entity;
 
 import lombok.*;
+import org.example.util.OrderStatus;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -21,8 +22,9 @@ public class OrderedBook {
     @JoinColumn(name = "book_id")
     private Book product;
 
+    private OrderStatus status;
+
     private int quantity;
 
     private int price;
-
 }
