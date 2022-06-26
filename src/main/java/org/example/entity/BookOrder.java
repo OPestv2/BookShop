@@ -1,6 +1,8 @@
 package org.example.entity;
 
 import lombok.*;
+import org.example.util.OrderStatus;
+import org.hibernate.type.OrderedSetType;
 
 import javax.persistence.*;
 import java.util.List;
@@ -27,4 +29,6 @@ public class BookOrder {
     private List<OrderedBook> books;
 
     private int totalPrice;
+
+    private OrderStatus status;
 }
