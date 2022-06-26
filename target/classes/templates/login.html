@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Ksiegarnia - Logowanie</title>
 </head>
 <body>
 <h1>Logowanie</h1>
-<form method="post" action="login">
-    <input type="text" name="login" placeholder="login" required>
+<form th:action="@{/login}" th:object="${user}" method="POST">
+    <input type="email" name="email" placeholder="email" required>
     <input type="password" name="password" placeholder="password" required>
     <button type="submit">Zaloguj</button>
 </form>
 <a href="register">Przejdź do rejestracji</a>
 </body>
 </html>
+

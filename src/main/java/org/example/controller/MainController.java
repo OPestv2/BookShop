@@ -1,7 +1,9 @@
 package org.example.controller;
 
+import org.example.entity.ShopUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -10,21 +12,28 @@ import java.util.UUID;
 public class MainController {
 
     @GetMapping
-    String main(Model model){
-        model.addAttribute("some_key","some_value");
+    String main(){
         return "main";
     }
 
-    @RequestMapping("/login")
-    String login(Model model){
-        model.addAttribute("some_key","some_value");
+    @GetMapping("/login")
+    String getLogin(){
         return "login";
     }
 
-    @RequestMapping("/register")
-    String register(Model model){
-        model.addAttribute("some_key","some_value");
+    @PostMapping("/login")
+    String postLogin(Model model, @ModelAttribute("user") ShopUser user, BindingResult result){
+        return "books";
+    }
+
+    @GetMapping("/register")
+    String getRegister(){
         return "register";
+    }
+
+    @PostMapping("/register")
+    String postRegister(Model model, @ModelAttribute("user") ShopUser user){
+        return "login";
     }
 
     @RequestMapping("/logout")
