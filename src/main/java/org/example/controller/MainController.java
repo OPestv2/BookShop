@@ -1,5 +1,7 @@
 package org.example.controller;
 
+import org.example.dto.LoginDto;
+import org.example.dto.SignUpDto;
 import org.example.entity.ShopUser;
 import org.example.security.JwtTokenProvider;
 import org.example.service.UserService;
@@ -43,8 +45,9 @@ public class MainController {
     }
 
     @PostMapping("/login")
-    String postLogin(Model model, @ModelAttribute("user") ShopUser user){
-        String a = "esfe";
+    String postLogin(Model model, @ModelAttribute("user") LoginDto user){
+        System.out.println(user.getEmail());
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     user.getEmail(), user.getPassword()));
@@ -66,9 +69,9 @@ public class MainController {
     }
 
     @PostMapping("/register")
-    String postRegister(Model model, @ModelAttribute("user") ShopUser user){
+    String postRegister(Model model, @ModelAttribute("user") SignUpDto user){
 
-        if(user.getEmail().length() == 0 || user.getEmail().length() > 100 || userService.getUserByEmail(user.getEmail()).isPresent() && user.getPassword().length()> 5)
+        if(user.getEmail().length() == 0 || user.getEmail().length() > 100 || userService.getByEmail(user.getEmail()).isPresent() && user.getPassword().length()> 5)
             return "register";
 
         ShopUser newuser = new ShopUser();

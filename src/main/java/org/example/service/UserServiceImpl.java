@@ -26,8 +26,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<ShopUser> getUserByEmail(String email) {
+    public Optional<ShopUser> getByEmail(String email) {
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<ShopUser> findByEmail(String email) {
+        return repo.findByEmail(email);
     }
 
     @Override
