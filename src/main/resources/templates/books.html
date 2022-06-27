@@ -6,21 +6,21 @@
 </head>
 <body>
 <h1>Książki</h1>
-<h6>Znalezionych elementów: ${count}</h6>
 
-<div th:if="${admin}">
-    <form action="/books/add" method="GET">
+<div th:if="${user.role == 'ADMIN'}">
+    <form action="books/add" method="POST">
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Tytuł</label>
-            <input type="text" class="form-control" id="exampleInputEmail1">
+            <input type="text" class="form-control" id="exampleInputEmail1" name="title" required>
         </div>
         <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Cena</label>
-            <input type="number" class="form-control" id="exampleInputPassword1">
+            <input type="number" class="form-control" id="exampleInputPassword1" name="price" required>
         </div>
         <button type="submit" class="btn btn-primary">Dodaj do bazy</button>
     </form>
 </div>
+
 
 <table class="table">
     <thead>
@@ -36,10 +36,8 @@
         <td th:text="${bookStat.count}"></td>
         <td th:text="${book.title}"></td>
         <td th:text="${book.price}"></td>
-        <td><img src="../img/${book.id}.png" height="200" width="160"></td>
-        <td><a class="btn btn-primary" href="/books/${book.id}" role="button">Szczegóły</a></td>
-        <td><a class="btn btn-success" href="/bookOrder/${book.id}" role="button">Dodaj do koszyka</a></td>
-        <td th:if="${admin}"><a class="btn btn-danger" href="/bookOrder/delete/${book.id}" role="button">Usuń z bazy</a></td>
+        <td th:if="${user.role != 'ADMIN'}"><a class="btn btn-success" href="/bookOrder/${book.id}" role="button">Dodaj do koszyka</a></td>
+        <td th:if="${user.role == 'ADMIN'}"><a class="btn btn-danger" href="/bookOrder/delete/${book.id}" role="button">Usuń z bazy</a></td>
     </tr>
     </tbody>
 </table>

@@ -16,4 +16,5 @@ public interface BookRepository extends CrudRepository<Book, UUID> {
     Optional<Book> findById(UUID id);
     Optional<ShopUser> findByTitle(String title);
     Boolean existsByTitle(String title);
+    List<Book> findAll();
 }

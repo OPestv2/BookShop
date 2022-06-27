@@ -18,7 +18,7 @@ public class Identity {
 
     public ShopUser getCurrent(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Optional<ShopUser> userOptional = userService.getByEmail(authentication.getName());
+        Optional<ShopUser> userOptional = userService.findByEmail(authentication.getName());
         return userOptional.orElse(null);
     }
 }

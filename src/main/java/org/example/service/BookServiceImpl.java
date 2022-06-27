@@ -5,6 +5,7 @@ import org.example.model.BookDTO;
 import org.example.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -14,6 +15,12 @@ public class BookServiceImpl implements BookService {
 
     public BookServiceImpl(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
+    }
+
+
+    @Override
+    public List<Book> getAll(){
+        return bookRepository.findAll();
     }
 
     @Override
@@ -49,5 +56,10 @@ public class BookServiceImpl implements BookService {
         }
         book.setPrice(price);
         return bookRepository.save(book);
+    }
+
+    @Override
+    public void save(Book book){
+        bookRepository.save(book);
     }
 }
