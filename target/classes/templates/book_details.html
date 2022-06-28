@@ -1,25 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Księgarnia - Szczegóły</title>
 </head>
 <body>
-<a href="/logout">Wyloguj</a>
 
-<h1>Szczegóły książki ${book.title}</h1>
+<h1 th:utext="Szczegóły książki ${book.title}"></h1>
 <table class="table">
     <tbody>
     <tr>
         <th scope="row">Title</th>
-        <td>${book.title}</td>
+        <td th:text="${book.title}"></td>
     </tr>
     <tr>
         <th scope="row">Price</th>
-        <td>${book.price}</td>
+        <td th:text="${book.price}"></td>
     </tr>
     </tbody>
 </table>
-<td><a class="btn btn-success" href="/bookOrder/${book.id}" role="button">Dodaj do koszyka</a></td>
+<td><a class="btn btn-success" th:href="@{/orders/{id}(id=${book.id})}" role="button">Dodaj do koszyka</a></td>
+<a href="books">Wróć do listy książek</a>
 </body>
 </html>

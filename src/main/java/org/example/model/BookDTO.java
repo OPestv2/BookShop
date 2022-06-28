@@ -10,7 +10,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class BookDTO {
 
-    private UUID id;
+    private int id;
     private String title;
     private int price;
 

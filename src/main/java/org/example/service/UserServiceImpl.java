@@ -1,6 +1,6 @@
 package org.example.service;
 
-import org.example.entity.ShopUser;
+import org.example.entity.Customer;
 import org.example.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,37 +26,37 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<ShopUser> findByEmail(String email) {
+    public Optional<Customer> findByEmail(String email) {
         return repo.findByEmail(email);
     }
 
     @Override
-    public ShopUser saveUser(ShopUser user) {
+    public Customer saveUser(Customer user) {
         return repo.save(user);
     }
 
     @Override
-    public List<ShopUser> getUsersByEmailLike(String email) {
+    public List<Customer> getUsersByEmailLike(String email) {
         return null;
     }
 
     @Override
-    public List<ShopUser> getUsers() {
+    public List<Customer> getUsers() {
         return repo.findAll();
     }
 
     @Override
-    public List<ShopUser> getAllUsers() {
+    public List<Customer> getAllUsers() {
         return repo.findAll();
     }
 
     @Override
-    public ShopUser register(String email, String password) {
+    public Customer register(String email, String password) {
         UserDetails user = loadUserByUsername(email);
         if (user != null) {
             return null;
         }
-        return saveUser(ShopUser.builder()
+        return saveUser(Customer.builder()
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .role("USER")

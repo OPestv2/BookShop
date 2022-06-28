@@ -10,13 +10,15 @@ public interface BookService {
 
      List<Book> getAll();
 
-     Book createBook(BookDTO bookDTO);
+     Book findBook(int id);
 
-     Book findBook(UUID id);
+     Book updateBook(int id, BookDTO bookDTO);
 
-     Book updateBook(UUID id, BookDTO bookDTO);
-
-     Book updateBookPrice(UUID id, int price);
+     Book updateBookPrice(int id, int price);
 
      void save(Book book);
+
+     void delete(Book book);
+
+     void deleteById(int id);
 }

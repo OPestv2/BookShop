@@ -2,7 +2,7 @@ package org.example.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.example.entity.ShopUser;
+import org.example.entity.Customer;
 
 import java.util.UUID;
 
@@ -13,8 +13,7 @@ public class UserDTO {
     private int id;
     private String nick;
 
-    public static UserDTO fromEntity(ShopUser shopUser) {
-        return new UserDTO(shopUser.getId(),
-                shopUser.getEmail());
+    public static UserDTO fromEntity(Customer customer) {
+        return new UserDTO(customer.getId(), customer.getEmail());
     }
 }

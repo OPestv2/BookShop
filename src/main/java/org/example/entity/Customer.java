@@ -13,7 +13,8 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ShopUser {
+@Table(name="customer")
+public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

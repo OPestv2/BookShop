@@ -1,7 +1,6 @@
 package org.example.entity;
 
 import lombok.*;
-import org.example.util.OrderStatus;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -12,19 +11,14 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@Table(name = "orderedbook")
 public class OrderedBook {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "book_id")
-    private Book product;
-
-    private OrderStatus status;
-
-    private int quantity;
-
-    private int price;
+    private Book book;
 }

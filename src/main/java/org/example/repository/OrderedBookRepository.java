@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;
 
-public interface OrderedBookRepository extends CrudRepository<OrderedBook, UUID> {
+public interface OrderedBookRepository extends CrudRepository<OrderedBook, Integer> {
 }
 

@@ -1,6 +1,6 @@
 package org.example.security;
 
-import org.example.entity.ShopUser;
+import org.example.entity.Customer;
 import org.example.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,9 +16,9 @@ public class Identity {
         this.userService = userService;
     }
 
-    public ShopUser getCurrent(){
+    public Customer getCurrent(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Optional<ShopUser> userOptional = userService.findByEmail(authentication.getName());
+        Optional<Customer> userOptional = userService.findByEmail(authentication.getName());
         return userOptional.orElse(null);
     }
 }

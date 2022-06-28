@@ -17,24 +17,18 @@ public class BookServiceImpl implements BookService {
         this.bookRepository = bookRepository;
     }
 
-
     @Override
     public List<Book> getAll(){
         return bookRepository.findAll();
     }
 
     @Override
-    public Book createBook(BookDTO bookDTO) {
-        return bookRepository.save(Book.builder().title(bookDTO.getTitle()).price(bookDTO.getPrice()).build());
-    }
-
-    @Override
-    public Book findBook(UUID id) {
+    public Book findBook(int id) {
         return bookRepository.findById(id).orElse(null);
     }
 
     @Override
-    public Book updateBook(UUID id, BookDTO bookDTO) {
+    public Book updateBook(int id, BookDTO bookDTO) {
         Book book = bookRepository.findById(id).orElse(null);
         if (book == null) {
             return null;
@@ -49,7 +43,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book updateBookPrice(UUID id, int price) {
+    public Book updateBookPrice(int id, int price) {
         Book book = bookRepository.findById(id).orElse(null);
         if (book == null) {
             return null;
@@ -62,4 +56,12 @@ public class BookServiceImpl implements BookService {
     public void save(Book book){
         bookRepository.save(book);
     }
+
+    @Override
+    public void delete(Book book){
+        bookRepository.delete(book);
+    }
+
+    @Override
+    public void deleteById(int id){bookRepository.deleteById(id);}
 }

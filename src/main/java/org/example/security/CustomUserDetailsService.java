@@ -1,7 +1,6 @@
 package org.example.security;
 
-import org.example.entity.ShopUser;
-import org.example.service.UserService;
+import org.example.entity.Customer;
 import org.example.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -24,7 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        ShopUser user = userService.findByEmail(email)
+        Customer user = userService.findByEmail(email)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found with email:" + email));
         return new org.springframework.security.core.userdetails.User(user.getEmail(),

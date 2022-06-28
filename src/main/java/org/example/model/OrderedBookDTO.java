@@ -9,22 +9,18 @@ import java.util.UUID;
 @Getter
 @Setter
 public class OrderedBookDTO {
-    private UUID id;
-    private int quantity;
-    private int price;
+    private int id;
     private BookDTO book;
 
-    public OrderedBookDTO(int quantity, int price, BookDTO book) {
-        this.quantity = quantity;
-        this.price = price;
+    public OrderedBookDTO(BookDTO book) {
         this.book = book;
     }
 
     public static OrderedBookDTO fromEntity(OrderedBook orderedBook) {
-        return new OrderedBookDTO(orderedBook.getQuantity(), orderedBook.getPrice(), BookDTO.fromEntity(orderedBook.getProduct()));
+        return new OrderedBookDTO(BookDTO.fromEntity(orderedBook.getBook()));
     }
 
-    public static UUID getBookId(OrderedBookDTO orderedBookDTO) {
+    public static int getBookId(OrderedBookDTO orderedBookDTO) {
         return orderedBookDTO.getBook().getId();
     }
 

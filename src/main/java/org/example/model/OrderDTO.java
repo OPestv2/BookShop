@@ -3,7 +3,7 @@ package org.example.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.example.entity.BookOrder;
+import org.example.entity.Orders;
 import org.example.util.OrderStatus;
 
 import java.util.List;
@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 @Getter
 @AllArgsConstructor
 public class OrderDTO {
-    private UUID id;
+    private int id;
     private UserDTO userDTO;
     private List<OrderedBookDTO> books;
     private OrderStatus orderStatus;
     private int totalPrice;
 
-    public static OrderDTO fromEntity(BookOrder bookOrder) {
-        return new OrderDTO(bookOrder.getId(),UserDTO.fromEntity(bookOrder.getShopUser()), bookOrder.getBooks().stream().map(OrderedBookDTO::fromEntity).collect(Collectors.toList()), OrderStatus.AWAITING_FOR_PAYMENT, bookOrder.getTotalPrice());
+    public static OrderDTO fromEntity(Orders orders) {
+        return new OrderDTO(orders.getId(),UserDTO.fromEntity(orders.getCustomer()), orders.getBooks().stream().map(OrderedBookDTO::fromEntity).collect(Collectors.toList()), OrderStatus.AWAITING_FOR_PAYMENT, orders.getTotalPrice());
     }
 }
