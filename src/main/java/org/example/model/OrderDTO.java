@@ -17,10 +17,14 @@ public class OrderDTO {
     private int id;
     private UserDTO userDTO;
     private List<OrderedBookDTO> books;
-    private OrderStatus orderStatus;
+    private String orderStatus;
     private int totalPrice;
 
     public static OrderDTO fromEntity(Orders orders) {
-        return new OrderDTO(orders.getId(),UserDTO.fromEntity(orders.getCustomer()), orders.getBooks().stream().map(OrderedBookDTO::fromEntity).collect(Collectors.toList()), OrderStatus.AWAITING_FOR_PAYMENT, orders.getTotalPrice());
+        return new OrderDTO(orders.getId(),
+                UserDTO.fromEntity(orders.getCustomer()),
+                orders.getBooks().stream().map(OrderedBookDTO::fromEntity).collect(Collectors.toList()),
+                "AWAITING_FOR_PAYMENT",
+                orders.getTotalPrice());
     }
 }

@@ -13,6 +13,7 @@ import org.example.service.BookService;
 import org.example.service.OrdersService;
 import org.example.service.UserService;
 import org.example.util.OrderStatus;
+import org.example.util.TotalPrice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -139,15 +140,23 @@ public class MainController {
         return "redirect:/books";
     }
 
-    @GetMapping("/order")
+    @GetMapping("/basket")
     String basket(Model model){
         Customer user = identity.getCurrent();
         List<Book> books = bookService.getAll();
         Orders orders = ordersService.findByCustomer(user);
 
+        if(orders == null){
+            return "redirect:/books";
+        }
+
+        TotalPrice price = new TotalPrice(orders.getTotalPrice());
+
         model.addAttribute("books", books);
         model.addAttribute("user", user);
         model.addAttribute("order", orders);
+        model.addAttribute("price", price);
+
         return "basket";
     }
 
@@ -172,15 +181,14 @@ public class MainController {
             order = new Orders();
             order.setBooks(lista);
             order.setCustomer(user);
-            order.setOrderStatus(OrderStatus.AWAITING_FOR_PAYMENT);
+            order.setOrderStatus("AWAITING_FOR_PAYMENT");
             ordersService.save(order);
         } else {
             List<OrderedBook> orderedBooks = order.getBooks();
             orderedBooks.add(orderedBook);
             order.setBooks(orderedBooks);
+            ordersService.update(order);
         }
-
-        ordersService.update(order);
 
         return "redirect:/books";
     }
@@ -201,12 +209,12 @@ public class MainController {
         List<OrderedBook> newOrderedBooks = new ArrayList<>();
 
         // Add every book except this with removed id
-        for(OrderedBook book : orderedBooks)
-            if(!Objects.equals(book.getBook().getId(), uid))
+        for(OrderedBook book : order.getBooks())
+            if(!Objects.equals(book.getId(), uid))
                 newOrderedBooks.add(book);
 
         // Update books list in order
-        order.setBooks(orderedBooks);
+        order.setBooks(newOrderedBooks);
 
         ordersService.update(order);
 

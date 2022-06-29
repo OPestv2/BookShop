@@ -4,6 +4,7 @@ import lombok.*;
 import org.example.util.OrderStatus;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,17 +25,21 @@ public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    int id;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @ManyToOne(targetEntity = OrderedBook.class)
-    @JoinColumn(name = "orderedbook_id")
-    private List<OrderedBook> books;
+//    @ManyToOne(targetEntity = OrderedBook.class)
+//    @JoinColumn(name = "orderedbook_id")
+//    private List<OrderedBook> books;
 
-    private OrderStatus orderStatus;
+    @OneToMany(
+        cascade = CascadeType.ALL)
+    private List<OrderedBook> books = new ArrayList<>();
+
+    private String orderStatus;
 
     public int getTotalPrice() {
         int sum = 0;

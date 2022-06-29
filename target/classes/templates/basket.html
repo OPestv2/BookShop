@@ -12,7 +12,8 @@
 <a href="/" class="btn btn-warning">Wyloguj</a>
 
 <div class="mt-5">
-    <h1 th:text="Status zamówienia: ${order.status}"></h1>
+    <p th:text="${order.orderStatus}"></p>
+    <!--    <h1 th:utext="Status zamówienia: ${order.orderStatus}"></h1>-->
 </div>
 
 <table class="table mt-5">

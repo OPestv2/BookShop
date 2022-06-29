@@ -27,7 +27,7 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public Orders updateOrdersStatus(int orderId, OrderStatus orderStatus) {
+    public Orders updateOrdersStatus(int orderId, String orderStatus) {
         Orders orders = ordersRepository.findById(orderId).orElseThrow();
         orders.setOrderStatus(orderStatus);
         return ordersRepository.save(orders);

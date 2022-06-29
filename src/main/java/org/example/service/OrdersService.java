@@ -11,7 +11,7 @@ public interface OrdersService {
 
     Orders findByCustomer(Customer user);
 
-    Orders updateOrdersStatus(int orderId, OrderStatus orderStatus);
+    Orders updateOrdersStatus(int orderId, String orderStatus);
 
     Orders getOrders(int orderId);
 
