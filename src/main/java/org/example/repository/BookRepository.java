@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface BookRepository extends CrudRepository<Book, Integer> {
+public interface BookRepository extends CrudRepository<Book, Long> {
     @Query("SELECT b FROM Book b WHERE b.id in :ids")
     List<Book> findByIds(List<UUID> ids);
-    Optional<Book> findById(int id);
+    Optional<Book> findById(Long id);
     Optional<Customer> findByTitle(String title);
     Boolean existsByTitle(String title);
     List<Book> findAll();

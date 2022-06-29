@@ -3,16 +3,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Ksiegarnia - Rejestracja</title>
+    <title>Księgarnia - Lista</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
-<body class="col-10 m-auto">
+<body class="col-8 m-auto">
 
 
+<a href="/" class="btn btn-warning">Wyloguj</a>
 
 
-<div th:if="${user.role == 'ADMIN'}">
+<div th:if="${user.role == 'ADMIN'}" class="mt-5">
     <h2>Dodaj książkę do bazy danych</h2>
     <form action="books/add" method="POST">
         <div class="mb-3">
@@ -26,15 +27,16 @@
 </div>
 
 <div th:if="${user.role != 'ADMIN'}">
-    <a href="basket">Koszyk</a>
+    <a href="basket" class="btn btn-success">Koszyk</a>
 </div>
 
 <table class="table mt-5">
     <thead>
     <tr>
-        <th scope="col">Lp.</th>
-        <th scope="col">Tytuł</th>
-        <th scope="col">Cena</th>
+        <th scope="col" class="col-1">Lp.</th>
+        <th scope="col" class="col-8">Tytuł</th>
+        <th scope="col" class="col-1">Cena</th>
+        <th scope="col" class="col-2"></th>
     </tr>
     </thead>
     <tbody>
@@ -42,7 +44,7 @@
         <td scope="row" th:text="${bookStat.count}"></td>
         <td th:text="${book.title}"></td>
         <td th:text="${book.price}"></td>
-        <td th:if="${user.role != 'ADMIN'}"><a class="btn btn-success" th:href="@{'/orders/' + ${book.id}}" role="button">Dodaj do koszyka</a></td>
+        <td th:if="${user.role != 'ADMIN'}"><a class="btn btn-success" th:href="@{'/order/add/' + ${book.id}}" role="button">Dodaj do koszyka</a></td>
         <td th:if="${user.role == 'ADMIN'}"><a class="btn btn-danger" th:href="@{'/books/remove/'+ ${book.id}}" role="button">Usuń z bazy</a></td>
     </tr>
     </tbody>

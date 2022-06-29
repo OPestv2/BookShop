@@ -12,6 +12,7 @@ import org.example.security.JwtTokenProvider;
 import org.example.service.BookService;
 import org.example.service.OrdersService;
 import org.example.service.UserService;
+import org.example.util.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,7 +27,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Controller
@@ -101,13 +104,13 @@ public class MainController {
             newuser.setRole("ADMIN");
 
         userService.saveUser(newuser);
+
         return "redirect:/login";
     }
 
     @GetMapping("/books")
     String books(Model model){
         Customer user = identity.getCurrent();
-
         List<Book> books = bookService.getAll();
 
         model.addAttribute("books", books);
@@ -119,7 +122,6 @@ public class MainController {
     String putBooks(Model model, @ModelAttribute("book") BookDTO bookDTO){
 
         Book book = new Book();
-        book.setId(bookDTO.getId());
         book.setPrice(bookDTO.getPrice());
         book.setTitle(bookDTO.getTitle());
         bookService.save(book);
@@ -129,7 +131,7 @@ public class MainController {
 
     @GetMapping("/books/remove/{id}")
     String deleteBooks(@PathVariable("id") String id, Model model){
-        int uid = Integer.parseInt(id);
+        Long uid = Long.parseLong(id);
 
         Book book = bookService.findBook(uid);
         bookService.delete(book);
@@ -137,39 +139,77 @@ public class MainController {
         return "redirect:/books";
     }
 
-    @GetMapping("/bookOrder/{id}")
-    String addToBasket(String id, Model model){
-        int uid = Integer.parseInt(id);
-
+    @GetMapping("/order")
+    String basket(Model model){
         Customer user = identity.getCurrent();
+        List<Book> books = bookService.getAll();
+        Orders orders = ordersService.findByCustomer(user);
+
+        model.addAttribute("books", books);
+        model.addAttribute("user", user);
+        model.addAttribute("order", orders);
+        return "basket";
+    }
+
+    @GetMapping("/order/add/{id}")
+    String addToBasket(@PathVariable("id") String id, Model model){
+        Customer user = identity.getCurrent();
+        if(user.getRole().equals("ADMIN"))
+            return "redirect:/books";
+
+        Long uid = Long.parseLong(id);
 
         Book book = bookService.findBook(uid);
         OrderedBook orderedBook = new OrderedBook();
         orderedBook.setBook(book);
 
-        Orders order = ordersService.findByUserId(user.getId());
+        Orders order = ordersService.findByCustomer(user);
 
+        if(order == null){
+            List<OrderedBook> lista = new ArrayList<>();
+            lista.add(orderedBook);
+            // Add empty order
+            order = new Orders();
+            order.setBooks(lista);
+            order.setCustomer(user);
+            order.setOrderStatus(OrderStatus.AWAITING_FOR_PAYMENT);
+            ordersService.save(order);
+        } else {
+            List<OrderedBook> orderedBooks = order.getBooks();
+            orderedBooks.add(orderedBook);
+            order.setBooks(orderedBooks);
+        }
+
+        ordersService.update(order);
+
+        return "redirect:/books";
+    }
+
+    @GetMapping("/order/delete")
+    String removeFromBasket(@PathVariable("id") String id, Model model){
+        Customer user = identity.getCurrent();
+        if(user.getRole().equals("ADMIN"))
+            return "redirect:/books";
+
+        Long uid = Long.parseLong(id);
+
+        // Retrieve order
+        Orders order = ordersService.findByCustomer(user);
+
+        // Prepare list of new books
         List<OrderedBook> orderedBooks = order.getBooks();
-        orderedBooks.add(orderedBook);
+        List<OrderedBook> newOrderedBooks = new ArrayList<>();
+
+        // Add every book except this with removed id
+        for(OrderedBook book : orderedBooks)
+            if(!Objects.equals(book.getBook().getId(), uid))
+                newOrderedBooks.add(book);
+
+        // Update books list in order
         order.setBooks(orderedBooks);
 
         ordersService.update(order);
-//        // get user's basket
-//        Orders orders = getOrder(id);
-//
-//        // prepare book to add
-//
-//
-//        // add book to basket
-//        List<OrderedBook> books = orders.getBooks();
-//
-//
-//        // update books list in existing basket object
-//        orders.setBooks(books);
-//
-//        // update in repo
-//        ordersRepository.updateOrders(orders);
 
-        return "redirect:/books";
+        return "redirect:/basket";
     }
 }

@@ -31,7 +31,7 @@ public class Orders {
     private Customer customer;
 
     @ManyToOne(targetEntity = OrderedBook.class)
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "orderedbook_id")
     private List<OrderedBook> books;
 
     private OrderStatus orderStatus;

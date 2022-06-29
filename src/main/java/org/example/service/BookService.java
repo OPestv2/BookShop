@@ -10,15 +10,15 @@ public interface BookService {
 
      List<Book> getAll();
 
-     Book findBook(int id);
+     Book findBook(Long id);
 
-     Book updateBook(int id, BookDTO bookDTO);
+     Book updateBook(Long id, BookDTO bookDTO);
 
-     Book updateBookPrice(int id, int price);
+     Book updateBookPrice(Long id, int price);
 
      void save(Book book);
 
      void delete(Book book);
 
-     void deleteById(int id);
+     void deleteById(Long id);
 }

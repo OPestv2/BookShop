@@ -23,12 +23,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book findBook(int id) {
+    public Book findBook(Long id) {
         return bookRepository.findById(id).orElse(null);
     }
 
     @Override
-    public Book updateBook(int id, BookDTO bookDTO) {
+    public Book updateBook(Long id, BookDTO bookDTO) {
         Book book = bookRepository.findById(id).orElse(null);
         if (book == null) {
             return null;
@@ -43,7 +43,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book updateBookPrice(int id, int price) {
+    public Book updateBookPrice(Long id, int price) {
         Book book = bookRepository.findById(id).orElse(null);
         if (book == null) {
             return null;
@@ -63,5 +63,5 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void deleteById(int id){bookRepository.deleteById(id);}
+    public void deleteById(Long id){bookRepository.deleteById(id);}
 }

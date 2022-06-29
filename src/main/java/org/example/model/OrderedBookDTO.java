@@ -20,7 +20,7 @@ public class OrderedBookDTO {
         return new OrderedBookDTO(BookDTO.fromEntity(orderedBook.getBook()));
     }
 
-    public static int getBookId(OrderedBookDTO orderedBookDTO) {
+    public static Long getBookId(OrderedBookDTO orderedBookDTO) {
         return orderedBookDTO.getBook().getId();
     }
 
