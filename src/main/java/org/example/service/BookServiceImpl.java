@@ -64,4 +64,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteById(Long id){bookRepository.deleteById(id);}
+
+    @Override
+    public Book findById(Long id) {
+        return bookRepository.findById(id).orElse(null);
+    }
 }

@@ -67,4 +67,9 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return null;
     }
+
+    @Override
+    public Customer findById(Long uid){
+        return repo.findById(uid).orElse(null);
+    }
 }

@@ -16,12 +16,6 @@ import java.util.UUID;
 @Builder
 @Table(name = "orders")
 public class Orders {
-//
-//    public Order(Customer customer){
-//        this.customer = customer;
-//        this.books = new ArrayList<>();
-//        this.orderStatus = OrderStatus.AWAITING_FOR_PAYMENT;
-//    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,10 +24,6 @@ public class Orders {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-
-//    @ManyToOne(targetEntity = OrderedBook.class)
-//    @JoinColumn(name = "orderedbook_id")
-//    private List<OrderedBook> books;
 
     @OneToMany(
         cascade = CascadeType.ALL)

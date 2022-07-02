@@ -12,14 +12,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
@@ -112,9 +115,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Repo
         return new JwtAuthenticationFilter();
     }
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//
+
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
 //        http.headers().frameOptions().disable();
 //        http
 //                .csrf().disable()
@@ -122,51 +126,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Repo
 //                .authenticationEntryPoint(authenticationEntryPoint)
 //                .and()
 //                .authorizeRequests()
-//                .antMatchers("/console/**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/**").permitAll()
-//                .antMatchers("/api/auth/**").permitAll()
-//                .antMatchers("/v3/api-docs/**").permitAll()
-//                .antMatchers("/swagger-ui/**").permitAll()
-//                .antMatchers("/swagger-resources/**").permitAll()
-//                .antMatchers("/swagger-ui.html").permitAll()
-//                .antMatchers("/webjars/**").permitAll()
-//                .anyRequest()
-//                .authenticated();
-//        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-//    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.headers().frameOptions().disable();
-        http
-                .csrf().disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint)
-                .and()
-                .authorizeRequests()
-                .antMatchers("/**").permitAll()
-                .anyRequest().authenticated();
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
-
-
-
-
-//        http
-//                .authorizeRequests()
 //                .antMatchers("/**").permitAll()
 //                .anyRequest().authenticated();
-////                .and()
-////                .formLogin()
-////                .loginPage("/login")
-////                .permitAll()
-////                .and()
-////                .logout()
-////                .permitAll();
-//
-//        http.csrf().disable();
-//        http.headers().frameOptions().disable();
 //        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        http.csrf().disable();
+        http.authorizeRequests()
+                .antMatchers("/", "/css/**", "/js/**", "/images/**").permitAll()
+                .antMatchers(("h2-console/**")).permitAll()
+                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/main").permitAll()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/register").permitAll()
+                .antMatchers("/book_details/**").hasRole("ADMIN")
+                .antMatchers("/basket").hasRole("USER")
+                .antMatchers("/basket/proceed").hasRole("USER")
+                .antMatchers("/basket/manage").hasRole("ADMIN")
+                .antMatchers("/admin_basket/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/");
+        //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+////                .addFilter(authenticationFilter())
+////                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userDetailsService, secret))
+//                .exceptionHandling()
+//                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
     }
 
     @Override
