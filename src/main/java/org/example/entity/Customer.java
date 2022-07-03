@@ -28,4 +28,7 @@ public class Customer {
 
     @NotNull
     private String role;
+
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
+    private List<Authority> authorities = new ArrayList<>();
 }

@@ -2,10 +2,7 @@ package org.example.controller;
 
 import org.example.dto.LoginDto;
 import org.example.dto.SignUpDto;
-import org.example.entity.Book;
-import org.example.entity.Customer;
-import org.example.entity.OrderedBook;
-import org.example.entity.Orders;
+import org.example.entity.*;
 import org.example.model.BookDTO;
 import org.example.security.Identity;
 import org.example.security.JwtTokenProvider;
@@ -100,10 +97,14 @@ public class MainController {
 
         int users = userService.getUsers().size();
         // TODO: zamiast suchej roli dodac new Authority (link: https://kampus.umcs.pl/pluginfile.php/734892/mod_resource/content/1/springSecurity2.pdf)
-        if(users > 0)
+        if(users > 0) {
             newuser.setRole("USER");
-        else
+            newuser.getAuthorities().add(new Authority(newuser,"USER"));
+        }
+        else {
             newuser.setRole("ADMIN");
+            newuser.getAuthorities().add(new Authority(newuser,"ADMIN"));
+        }
 
         userService.saveUser(newuser);
 

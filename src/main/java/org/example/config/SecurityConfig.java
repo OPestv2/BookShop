@@ -138,15 +138,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Repo
                 .antMatchers("/main").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/register").permitAll()
-                .antMatchers("/book_details/**").hasRole("ADMIN")
-                .antMatchers("/basket").hasRole("USER")
-                .antMatchers("/basket/proceed").hasRole("USER")
-                .antMatchers("/basket/manage").hasRole("ADMIN")
-                .antMatchers("/admin_basket/**").hasRole("ADMIN")
+                .antMatchers("/book_details/**").hasAuthority("ADMIN")
+                .antMatchers("/basket").hasAuthority("USER")
+                .antMatchers("/basket/proceed/").hasAuthority("USER")
+                .antMatchers("/basket/manage/").hasAuthority("ADMIN")
+                .antMatchers("/admin_basket/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/");
+
+
         //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 //                .and()
 ////                .addFilter(authenticationFilter())
