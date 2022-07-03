@@ -19,4 +19,6 @@ public interface UserService extends UserDetailsService {
     List<Customer> getAllUsers();
 
     Customer register(String email, String password);
+
+    Customer findById(Long id);
 }

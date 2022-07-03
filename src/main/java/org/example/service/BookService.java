@@ -21,4 +21,6 @@ public interface BookService {
      void delete(Book book);
 
      void deleteById(Long id);
+
+     Book findById(Long id);
 }

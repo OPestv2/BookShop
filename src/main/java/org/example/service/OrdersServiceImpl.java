@@ -27,14 +27,14 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public Orders updateOrdersStatus(int orderId, String orderStatus) {
-        Orders orders = ordersRepository.findById(orderId).orElseThrow();
+    public Orders updateOrdersStatus(Customer user, String orderStatus) {
+        Orders orders = ordersRepository.findByCustomer(user);
         orders.setOrderStatus(orderStatus);
         return ordersRepository.save(orders);
     }
 
     @Override
-    public Orders getOrders(int orderId) {
+    public Orders getOrders(Long orderId) {
         return ordersRepository.findById(orderId).orElseThrow();
     }
 
@@ -51,5 +51,15 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public void save(Orders orders){
         ordersRepository.save(orders);
+    }
+
+    @Override
+    public List<Orders> getAll() {
+        return (List<Orders>) ordersRepository.findAll();
+    }
+
+    @Override
+    public Orders findById(Long id) {
+        return ordersRepository.findById(id).orElse(null);
     }
 }

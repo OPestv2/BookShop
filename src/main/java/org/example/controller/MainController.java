@@ -12,6 +12,7 @@ import org.example.security.JwtTokenProvider;
 import org.example.service.BookService;
 import org.example.service.OrdersService;
 import org.example.service.UserService;
+import org.example.util.DamnClass;
 import org.example.util.OrderStatus;
 import org.example.util.TotalPrice;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,7 +99,7 @@ public class MainController {
         newuser.setPassword(passwordEncoder.encode(user.getPassword()));
 
         int users = userService.getUsers().size();
-
+        // TODO: zamiast suchej roli dodac new Authority (link: https://kampus.umcs.pl/pluginfile.php/734892/mod_resource/content/1/springSecurity2.pdf)
         if(users > 0)
             newuser.setRole("USER");
         else
@@ -143,11 +144,16 @@ public class MainController {
     @GetMapping("/basket")
     String basket(Model model){
         Customer user = identity.getCurrent();
-        List<Book> books = bookService.getAll();
-        Orders orders = ordersService.findByCustomer(user);
 
-        if(orders == null){
+        Orders orders = ordersService.findByCustomer(user);
+        List<Book> books = new ArrayList<>();
+
+        if(orders == null || orders.getBooks().isEmpty()){
             return "redirect:/books";
+        }
+
+        for(OrderedBook orderedBook : orders.getBooks()){
+            books.add(orderedBook.getBook());
         }
 
         TotalPrice price = new TotalPrice(orders.getTotalPrice());
@@ -168,7 +174,7 @@ public class MainController {
 
         Long uid = Long.parseLong(id);
 
-        Book book = bookService.findBook(uid);
+        Book book = bookService.findById(uid);
         OrderedBook orderedBook = new OrderedBook();
         orderedBook.setBook(book);
 
@@ -193,7 +199,7 @@ public class MainController {
         return "redirect:/books";
     }
 
-    @GetMapping("/order/delete")
+    @GetMapping("/order/delete/{id}")
     String removeFromBasket(@PathVariable("id") String id, Model model){
         Customer user = identity.getCurrent();
         if(user.getRole().equals("ADMIN"))
@@ -205,19 +211,66 @@ public class MainController {
         Orders order = ordersService.findByCustomer(user);
 
         // Prepare list of new books
-        List<OrderedBook> orderedBooks = order.getBooks();
         List<OrderedBook> newOrderedBooks = new ArrayList<>();
 
         // Add every book except this with removed id
         for(OrderedBook book : order.getBooks())
-            if(!Objects.equals(book.getId(), uid))
+            if(book.getBook().getId() != uid)
                 newOrderedBooks.add(book);
 
         // Update books list in order
         order.setBooks(newOrderedBooks);
 
-        ordersService.update(order);
+        ordersService.save(order);
 
         return "redirect:/basket";
+    }
+
+    @GetMapping("/basket/proceed")
+    String clearBasket(Model model){
+        Customer user = identity.getCurrent();
+        if(user.getRole().equals("ADMIN"))
+            return "redirect:/books";
+
+        ordersService.updateOrdersStatus(user, "PAID");
+
+        return "redirect:/books";
+    }
+
+    @GetMapping("/basket/manage")
+    String showOrders(Model model){
+        // show all paid orders
+        Customer user = identity.getCurrent();
+        if(!user.getRole().equals("ADMIN"))
+            return "redirect:/books";
+
+        List<Orders> orders = ordersService.getAll();
+        List<DamnClass> finalDamnObjects = new ArrayList<>();
+
+        for(Orders order : orders) {
+            if (order.getOrderStatus().equals("PAID")) {
+                DamnClass damn = new DamnClass(order, order.getCustomer(), new TotalPrice(order.getTotalPrice()));
+                finalDamnObjects.add(damn);
+            }
+        }
+
+        model.addAttribute("damns", finalDamnObjects);
+
+        return "admin_basket";
+    }
+
+    @GetMapping("/basket/manage/{id}")
+    String acceptOrder(@PathVariable("id") String id, Model model){
+
+        Customer user = identity.getCurrent();
+        if(!user.getRole().equals("ADMIN"))
+            return "redirect:/books";
+
+        Long uid = Long.parseLong(id);
+        Orders order = ordersService.findById(uid);
+
+        ordersService.updateOrdersStatus(order.getCustomer(), "CONFIRMED");
+
+        return "redirect:/admin_basket";
     }
 }

@@ -29,6 +29,9 @@
 <div th:if="${user.role != 'ADMIN'}">
     <a href="basket" class="btn btn-success">Koszyk</a>
 </div>
+<div th:if="${user.role == 'ADMIN'}">
+    <a href="basket/manage" class="btn btn-success">Zarządzaj zamówieniami</a>
+</div>
 
 <table class="table mt-5">
     <thead>

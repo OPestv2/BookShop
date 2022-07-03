@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;
 
-public interface OrdersRepository extends CrudRepository<Orders, Integer> {
+public interface OrdersRepository extends CrudRepository<Orders, Long> {
 
     Orders findByCustomer(Customer userId);
 }
