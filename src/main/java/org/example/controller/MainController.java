@@ -10,7 +10,6 @@ import org.example.service.BookService;
 import org.example.service.OrdersService;
 import org.example.service.UserService;
 import org.example.util.DamnClass;
-import org.example.util.OrderStatus;
 import org.example.util.TotalPrice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,8 +27,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 
 @Controller
 public class MainController {
@@ -96,7 +93,9 @@ public class MainController {
         newuser.setPassword(passwordEncoder.encode(user.getPassword()));
 
         int users = userService.getUsers().size();
-        // TODO: zamiast suchej roli dodac new Authority (link: https://kampus.umcs.pl/pluginfile.php/734892/mod_resource/content/1/springSecurity2.pdf)
+
+        userService.save(newuser);
+
         if(users > 0) {
             newuser.setRole("USER");
             newuser.getAuthorities().add(new Authority(newuser,"USER"));
@@ -106,7 +105,7 @@ public class MainController {
             newuser.getAuthorities().add(new Authority(newuser,"ADMIN"));
         }
 
-        userService.saveUser(newuser);
+        userService.save(newuser);
 
         return "redirect:/login";
     }
@@ -249,7 +248,7 @@ public class MainController {
         List<DamnClass> finalDamnObjects = new ArrayList<>();
 
         for(Orders order : orders) {
-            if (order.getOrderStatus().equals("PAID")) {
+            if (order.getOrderStatus().equals("PAID") || order.getOrderStatus().equals("CONFIRMED")) {
                 DamnClass damn = new DamnClass(order, order.getCustomer(), new TotalPrice(order.getTotalPrice()));
                 finalDamnObjects.add(damn);
             }
@@ -268,10 +267,13 @@ public class MainController {
             return "redirect:/books";
 
         Long uid = Long.parseLong(id);
-        Orders order = ordersService.findById(uid);
+
+        Customer customer = userService.findById(uid);
+
+        Orders order = ordersService.findByCustomer(customer);
 
         ordersService.updateOrdersStatus(order.getCustomer(), "CONFIRMED");
 
-        return "redirect:/admin_basket";
+        return "redirect:/basket/manage";
     }
 }

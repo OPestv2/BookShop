@@ -1,12 +1,10 @@
 package org.example.entity;
 
 import lombok.*;
-import org.example.util.OrderStatus;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter

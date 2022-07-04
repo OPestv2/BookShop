@@ -17,7 +17,8 @@
         <th scope="col" class="col-1">Lp.</th>
         <th scope="col" class="col-8">Użytkownik</th>
         <th scope="col" class="col-1">ID zamówienia</th>
-        <th scope="col" class="col-2">Wartość zamówienia</th>
+        <th scope="col" class="col-1">Wartość zamówienia</th>
+        <th scope="col" class="col-1">Status</th>
         <th scope="col"></th>
     </tr>
     </thead>
@@ -27,7 +28,8 @@
         <td th:text="${damn.customer.email}"></td>
         <td th:text="${damn.orders.id}"></td>
         <td th:text="${damn.totalPrice.price}"></td>
-        <td><a class="btn btn-success" th:href="@{'/orders/manage/' + ${damn.customer.id}}" role="button">Zaakceptuj</a></td>
+        <td th:text="${damn.orders.orderStatus}"></td>
+        <td th:if="${damn.orders.orderStatus == 'PAID'}"><a class="btn btn-success" th:href="@{'/basket/manage/' + ${damn.customer.id}}" role="button">Zaakceptuj</a></td>
     </tr>
     </tbody>
 </table>

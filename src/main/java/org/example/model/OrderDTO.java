@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.entity.Orders;
-import org.example.util.OrderStatus;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Setter

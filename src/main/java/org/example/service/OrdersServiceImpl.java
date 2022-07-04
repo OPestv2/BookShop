@@ -15,14 +15,9 @@ import java.util.UUID;
 
 @Service
 public class OrdersServiceImpl implements OrdersService {
-
-    private final BookRepository bookRepository;
-    private final OrderedBookRepository orderedBookRepository;
     private final OrdersRepository ordersRepository;
 
-    public OrdersServiceImpl(BookRepository bookRepository, OrderedBookRepository orderedBookRepository, OrdersRepository ordersRepository) {
-        this.bookRepository = bookRepository;
-        this.orderedBookRepository = orderedBookRepository;
+    public OrdersServiceImpl(OrdersRepository ordersRepository) {
         this.ordersRepository = ordersRepository;
     }
 
@@ -31,11 +26,6 @@ public class OrdersServiceImpl implements OrdersService {
         Orders orders = ordersRepository.findByCustomer(user);
         orders.setOrderStatus(orderStatus);
         return ordersRepository.save(orders);
-    }
-
-    @Override
-    public Orders getOrders(Long orderId) {
-        return ordersRepository.findById(orderId).orElseThrow();
     }
 
     @Override
@@ -56,10 +46,5 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public List<Orders> getAll() {
         return (List<Orders>) ordersRepository.findAll();
-    }
-
-    @Override
-    public Orders findById(Long id) {
-        return ordersRepository.findById(id).orElse(null);
     }
 }

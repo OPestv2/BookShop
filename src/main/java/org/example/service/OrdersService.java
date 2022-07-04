@@ -14,13 +14,9 @@ public interface OrdersService {
 
     Orders updateOrdersStatus(Customer user, String orderStatus);
 
-    Orders getOrders(Long orderId);
-
     void update(Orders orders);
 
     void save(Orders orders);
 
     List<Orders> getAll();
-
-    Orders findById(Long id);
 }

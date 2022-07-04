@@ -1,25 +1,18 @@
 package org.example.util;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.Objects;
+
+@Getter
+@Setter
 public class AuthorityPK implements Serializable {
     private static final long serialVersionUID = 1L;
-    private int id;
+    private Long id;
     private String authority;
-    public AuthorityPK() {
-    }
-    public int getUsername() {
-        return id;
-    }
-    public void setUsername(int username) {
-        this.id = username;
-    }
-    public String getAuthority() {
-        return authority;
-    }
-    public void setAuthority(String authority) {
-        this.authority = authority;
-    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -28,6 +21,7 @@ public class AuthorityPK implements Serializable {
         return Objects.equals(id, that.id) &&
                 Objects.equals(authority, that.authority);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(id, authority);

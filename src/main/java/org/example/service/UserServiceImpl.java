@@ -18,11 +18,9 @@ public class UserServiceImpl implements UserService {
     private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserRepository repo;
-    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository repo, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository repo) {
         this.repo = repo;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -31,36 +29,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Customer saveUser(Customer user) {
+    public Customer save(Customer user) {
         return repo.save(user);
-    }
-
-    @Override
-    public List<Customer> getUsersByEmailLike(String email) {
-        return null;
     }
 
     @Override
     public List<Customer> getUsers() {
         return repo.findAll();
-    }
-
-    @Override
-    public List<Customer> getAllUsers() {
-        return repo.findAll();
-    }
-
-    @Override
-    public Customer register(String email, String password) {
-        UserDetails user = loadUserByUsername(email);
-        if (user != null) {
-            return null;
-        }
-        return saveUser(Customer.builder()
-                .email(email)
-                .password(passwordEncoder.encode(password))
-                .role("USER")
-                .build());
     }
 
     @Override

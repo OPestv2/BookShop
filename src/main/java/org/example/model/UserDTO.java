@@ -4,13 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.example.entity.Customer;
 
-import java.util.UUID;
-
 @Getter
 @AllArgsConstructor
 public class UserDTO {
 
-    private int id;
+    private Long id;
     private String nick;
 
     public static UserDTO fromEntity(Customer customer) {

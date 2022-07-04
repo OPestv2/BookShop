@@ -12,15 +12,9 @@ public interface BookService {
 
      Book findBook(Long id);
 
-     Book updateBook(Long id, BookDTO bookDTO);
-
-     Book updateBookPrice(Long id, int price);
-
      void save(Book book);
 
      void delete(Book book);
-
-     void deleteById(Long id);
 
      Book findById(Long id);
 }
